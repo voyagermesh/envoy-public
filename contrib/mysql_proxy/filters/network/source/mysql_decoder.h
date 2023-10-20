@@ -29,6 +29,7 @@ public:
   virtual void onMoreClientLoginResponse(ClientLoginResponse&) PURE;
   virtual void onCommand(Command&) PURE;
   virtual void onCommandResponse(CommandResponse&) PURE;
+  virtual bool shouldTerminateDownstreamTLS() PURE;
 };
 
 /**

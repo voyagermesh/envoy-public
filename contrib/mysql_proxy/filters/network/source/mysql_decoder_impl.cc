@@ -27,7 +27,7 @@ void DecoderImpl::parseMessage(Buffer::Instance& message, uint8_t seq, uint32_t 
     // Process Client Handshake Response
     ClientLogin client_login{};
     client_login.decode(message, seq, len);
-    if (client_login.isSSLRequest()) {
+    if (client_login.isSSLRequest() && !callbacks_.shouldTerminateDownstreamTLS()) {
       session_.setState(MySQLSession::State::SslPt);
     } else if (client_login.isResponse41()) {
       session_.setState(MySQLSession::State::ChallengeResp41);

@@ -49,12 +49,23 @@ struct MySQLProxyStats {
  */
 class MySQLFilterConfig {
 public:
-  MySQLFilterConfig(const std::string& stat_prefix, Stats::Scope& scope);
+
+  struct MySQLFilterConfigOptions {
+    std::string stat_prefix;
+    std::string ll;
+    bool terminate_downstream_tls;
+    bool upstream_tls;
+  };
+
+  MySQLFilterConfig(const MySQLFilterConfigOptions& config_options, Stats::Scope& scope);
 
   const MySQLProxyStats& stats() { return stats_; }
 
   Stats::Scope& scope_;
   MySQLProxyStats stats_;
+
+  bool terminate_downstream_tls_{false};
+  bool upstream_tls_{false};
 
 private:
   MySQLProxyStats generateStats(const std::string& prefix, Stats::Scope& scope) {
@@ -90,10 +101,20 @@ public:
   void onMoreClientLoginResponse(ClientLoginResponse& message) override;
   void onCommand(Command& message) override;
   void onCommandResponse(CommandResponse&) override{};
+  bool shouldTerminateDownstreamTLS() override;
 
   void doDecode(Buffer::Instance& buffer);
   DecoderPtr createDecoder(DecoderCallbacks& callbacks);
   MySQLSession& getSession() { return decoder_->getSession(); }
+
+  Buffer::OwnedImpl getClientHelloPacket();
+  bool shouldEncryptUpstream();
+  void sendUpstream(Buffer::Instance& data);
+  void printData(Buffer::Instance& data, int len);
+  Buffer::OwnedImpl getDataWithNewIndex(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
+  Buffer::OwnedImpl changeBufferIdx(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
+  Buffer::OwnedImpl changeBufferIdxForWrite(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
+  Buffer::OwnedImpl manipulateData(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
 
 private:
   Network::ReadFilterCallbacks* read_callbacks_{};
@@ -102,6 +123,20 @@ private:
   Buffer::OwnedImpl write_buffer_;
   std::unique_ptr<Decoder> decoder_;
   bool sniffing_{true};
+
+  bool down_tls_on{false};
+  bool up_tls_on{false};
+  bool initialHandshakeStage{true};
+  bool shouldIncreaseWriteBufIdx{false};
+  bool handshake_done{false};
+  bool sslReqSentUp{false};
+
+  Buffer::OwnedImpl temp_storage_;
+
+  // bool waiting_for_upTls{false};
+
+  // Buffer::OwnedImpl first_temp, second_temp;
+
 };
 
 } // namespace MySQLProxy
