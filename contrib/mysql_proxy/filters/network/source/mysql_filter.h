@@ -115,6 +115,7 @@ public:
   Buffer::OwnedImpl changeBufferIdx(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
   Buffer::OwnedImpl changeBufferIdxForWrite(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
   Buffer::OwnedImpl manipulateData(Buffer::OwnedImpl data, uint8_t changeIndex, bool decrease);
+  Buffer::OwnedImpl onSSLFlagInClientHello(Buffer::OwnedImpl data);
 
 private:
   Network::ReadFilterCallbacks* read_callbacks_{};

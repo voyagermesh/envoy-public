@@ -37,7 +37,7 @@ Network::FilterStatus MySQLFilter::onData(Buffer::Instance& data, bool endBuf) {
         if(!down_tls_on){
           Buffer::OwnedImpl temp;
           temp.add(data);
-          printData(temp,-1);
+
           if(read_callbacks_->connection().startSecureTransport()){
             printf("Downstream SSL established\n");
           }
@@ -140,8 +140,7 @@ Network::FilterStatus MySQLFilter::onData(Buffer::Instance& data, bool endBuf) {
           data.drain(data.length());
           data.add(tmp_buffer);
           up_tls_on = true;
-          std::cout<< "Printing OnData Again:   \n";
-          printData(data,20);
+
         }
         else{
           initialHandshakeStage = false;
@@ -153,40 +152,6 @@ Network::FilterStatus MySQLFilter::onData(Buffer::Instance& data, bool endBuf) {
     }
   }
 
-
-
-  /*if(!down_tls_on && config_->terminate_downstream_tls_){
-    // first_temp.add(data);
-    if(read_callbacks_->connection().startSecureTransport()){
-      printf("Downstream SSL established\n");
-    }
-    else{
-      printf("Downstream SSL Failed\n");
-    }
-    down_tls_on = true;
-
-    Buffer::OwnedImpl temp_red_buffer = getClientHelloPacket();
-    read_buffer_.add(temp_red_buffer);
-    doDecode(read_buffer_);
-
-    return Network::FilterStatus::Continue;
-
-  }
-  else if(!up_tls_on && config_->upstream_tls_){
-      //second_temp.add(data);
-      //waiting_for_upTls = true;
-      up_tls_on = true;
-      //read_callbacks_->injectReadDataToFilterChain(first_temp, false);
-
-      //return Network::FilterStatus::StopIteration;
-
-      if(read_callbacks_->startUpstreamSecureTransport()){
-          printf("Started upstream TLS\n");
-      }
-      else{
-          printf("Failed upstream TLS\n");
-      }
-  }*/
 
   if (sniffing_) {
     read_buffer_.add(data);
@@ -209,6 +174,10 @@ Network::FilterStatus MySQLFilter::onWrite(Buffer::Instance& data, bool) {
     initialHandshakeStage = false;
   }
   else if(initialHandshakeStage && !shouldEncryptUpstream() && shouldTerminateDownstreamTLS()){
+    auto newData = onSSLFlagInClientHello(data);
+    data.drain(data.length());
+    data.add(newData);
+
     shouldIncreaseWriteBufIdx = true;
   }
 
@@ -583,6 +552,48 @@ Buffer::OwnedImpl MySQLFilter::manipulateData(Buffer::OwnedImpl data, uint8_t ch
       a ^= bit4;
 
     }
+    returnData.writeBEInt<uint8_t>(a);
+  }
+
+  return returnData;
+}
+
+
+/* Changes the client ssl flag to 1 in server hello packet V10.
+ * Use this when there is a ssl connection request from downstream but no ssl in the upsream
+*/
+Buffer::OwnedImpl MySQLFilter::onSSLFlagInClientHello(Buffer::OwnedImpl data) {
+
+  Buffer::OwnedImpl returnData;
+  int sz = data.length();
+  int i;
+
+  for(i = 0;i<4;i++){
+    uint8_t tmpByt = data.peekBEInt<uint8_t>(i);
+    returnData.writeBEInt<uint8_t>(tmpByt);
+  }
+
+  for(i = 4;i<sz;i++){
+    uint8_t a = data.peekBEInt<uint8_t>(i);
+    returnData.writeBEInt<uint8_t>(a);
+    if(a==0x0){
+      break;
+    }
+  }
+
+  int j = i + 14;
+
+  for(i++;i<=j;i++){
+    uint8_t a = data.peekBEInt<uint8_t>(i);
+    returnData.writeBEInt<uint8_t>(a);
+  }
+
+  uint8_t b = data.peekBEInt<uint8_t>(i);
+  b |= 0x8;
+  returnData.writeBEInt<uint8_t>(b);
+
+  for(i++;i<sz;i++){
+    uint8_t a = data.peekBEInt<uint8_t>(i);
     returnData.writeBEInt<uint8_t>(a);
   }
 
