@@ -51,8 +51,8 @@ Network::FilterStatus MySQLFilter::onData(Buffer::Instance& data, bool endBuf) {
               std::cout<<"Came Here"<<std::endl;
             return true;
           });
-          data.drain(data.length());
-          data.add(getClientHelloPacket());
+          // data.drain(data.length());
+          // data.add(getClientHelloPacket());
 
         }
         else if(!up_tls_on){
