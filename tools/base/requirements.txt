@@ -204,7 +204,7 @@ aioquic==0.9.21 \
     --hash=sha256:c627ed67f008cc020e67e20872c844c60c2dcc45d73e6f1d035c399c2953a974 \
     --hash=sha256:efbf4de92df68d11a42909b4750430a61380d32e2b5d5da1525f6e482a09f60c \
     --hash=sha256:f6d9f6f1f778875fc8bd06b387b5916f48f610a698eee31385688ab8ba696fcf
-    # via -r tools/base/requirements.in
+    # via -r requirements.in
 aiosignal==1.3.1 \
     --hash=sha256:54cd96e15e1649b75d6c87526a6ff0b6c1b0dd3459f43d9ca11d48c339b68cfc \
     --hash=sha256:f8376fb07dd1e86a584e4fcdec80b36b7f81aac666ebc724e2c090300dd83b17
@@ -721,9 +721,9 @@ importlib-metadata==6.8.0 \
     --hash=sha256:3ebb78df84a805d7698245025b975d9d67053cd94c79245ba4b3eb694abe68bb \
     --hash=sha256:dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743
     # via yapf
-jinja2==3.1.2 \
-    --hash=sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852 \
-    --hash=sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61
+jinja2==3.1.6 \
+    --hash=sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d \
+    --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67
     # via
     #   -r requirements.in
     #   envoy-base-utils
