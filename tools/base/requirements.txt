@@ -204,7 +204,7 @@ aioquic==0.9.21 \
     --hash=sha256:c627ed67f008cc020e67e20872c844c60c2dcc45d73e6f1d035c399c2953a974 \
     --hash=sha256:efbf4de92df68d11a42909b4750430a61380d32e2b5d5da1525f6e482a09f60c \
     --hash=sha256:f6d9f6f1f778875fc8bd06b387b5916f48f610a698eee31385688ab8ba696fcf
-    # via -r tools/base/requirements.in
+    # via -r requirements.in
 aiosignal==1.3.1 \
     --hash=sha256:54cd96e15e1649b75d6c87526a6ff0b6c1b0dd3459f43d9ca11d48c339b68cfc \
     --hash=sha256:f8376fb07dd1e86a584e4fcdec80b36b7f81aac666ebc724e2c090300dd83b17
@@ -1015,9 +1015,9 @@ pygithub==2.1.1 \
     --hash=sha256:4b528d5d6f35e991ea5fd3f942f58748f24938805cb7fcf24486546637917337 \
     --hash=sha256:ecf12c2809c44147bce63b047b3d2e9dac8a41b63e90fcb263c703f64936b97c
     # via -r requirements.in
-pygments==2.16.1 \
-    --hash=sha256:13fc09fa63bc8d8671a6d247e1eb303c4b343eaee81d861f3404db2935653692 \
-    --hash=sha256:1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29
+pygments==2.20.0 \
+    --hash=sha256:6757cd03768053ff99f3039c1a36d6c0aa0b263438fcab17520b30a303a82b5f \
+    --hash=sha256:81a9e26dd42fd28a23a2d169d86d7ac03b46e2f8b59ed4698fb4785f946d0176
     # via
     #   envoy-docs-sphinx-runner
     #   sphinx
