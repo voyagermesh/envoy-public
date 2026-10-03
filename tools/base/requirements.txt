@@ -204,7 +204,7 @@ aioquic==0.9.21 \
     --hash=sha256:c627ed67f008cc020e67e20872c844c60c2dcc45d73e6f1d035c399c2953a974 \
     --hash=sha256:efbf4de92df68d11a42909b4750430a61380d32e2b5d5da1525f6e482a09f60c \
     --hash=sha256:f6d9f6f1f778875fc8bd06b387b5916f48f610a698eee31385688ab8ba696fcf
-    # via -r tools/base/requirements.in
+    # via -r requirements.in
 aiosignal==1.3.1 \
     --hash=sha256:54cd96e15e1649b75d6c87526a6ff0b6c1b0dd3459f43d9ca11d48c339b68cfc \
     --hash=sha256:f8376fb07dd1e86a584e4fcdec80b36b7f81aac666ebc724e2c090300dd83b17
@@ -1317,9 +1317,9 @@ uritemplate==4.1.1 \
     --hash=sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0 \
     --hash=sha256:830c08b8d99bdd312ea4ead05994a38e8936266f84b9a7878232db50b044e02e
     # via gidgethub
-urllib3==2.0.7 \
-    --hash=sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84 \
-    --hash=sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e
+urllib3==2.8.0 \
+    --hash=sha256:0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3 \
+    --hash=sha256:63bf2ead4c879426ebf22ef2a781eeb4aa3b4ae798a0435506f8687fd5bb9b63
     # via
     #   pygithub
     #   requests
